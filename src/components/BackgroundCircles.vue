@@ -1,21 +1,26 @@
 <template>
+  <!-- 背景容器 -->
   <div class="fixed inset-0 overflow-hidden bg-jet p-4">
     <div class="relative w-full h-full flex inset-0 bg-night rounded-lg"></div>
   </div>
+
+  <!-- 文字容器：位於背景之上，但會被圓形遮住；文字以視差效果隨滾動移動 -->
   <div
-    class="absolute inset-0 flex flex-col items-center justify-cente text-outline text-xxl font-bebas pointer-events-none z-10"
+    class="absolute inset-0 flex flex-col items-center justify-center text-outline text-xxl font-bebas pointer-events-none z-10"
     style="left: 25%; top: 50%"
   >
-    <h1 style="transform: translate(-50%, -45%)">FIND</h1>
-    <h1 style="transform: translate(-10%, -90%)">MUSIC</h1>
-    <h1 style="transform: translate(-80%, -135%)">FOR</h1>
-    <h1 style="transform: translate(-30%, -180%)">TODAY</h1>
+    <h1 :style="findStyle">FIND</h1>
+    <h1 :style="musicStyle">MUSIC</h1>
+    <h1 :style="forStyle">FOR</h1>
+    <h1 :style="todayStyle">TODAY</h1>
   </div>
 
+  <!-- 圓形容器 -->
   <div class="fixed inset-0 overflow-hidden p-4 z-20">
     <div class="relative w-full h-full flex items-center justify-center">
+      <!-- 左側圓形 -->
       <div
-        class="z-20 absolute w-40 h-40 bg-orange rounded-full border-8 border-night flex items-center justify-center"
+        class="z-30 absolute w-40 h-40 bg-orange rounded-full border-8 border-night flex items-center justify-center"
         :style="leftCircleStyle"
       >
         <div
@@ -29,17 +34,34 @@
         </div>
       </div>
 
+      <!-- 中央圓形 -->
       <div
-        class="z-20 absolute w-40 h-40 bg-gray rounded-full border-8 border-night flex items-center justify-center"
+        class="z-20 absolute w-40 h-40 bg-yellow rounded-full border-8 border-night flex items-center justify-center"
         style="left: 50%; top: 50%; transform: translate(-50%, -200%)"
       >
-        <h1 class="z-30 text-white text-2xl font-bold font-bebas">MooLody</h1>
+        <h1 class="z-30 text-white text-8xl font-bold font-bebas">MooLody</h1>
       </div>
 
+      <!-- 右側圓形 -->
       <div
-        class="z-20 absolute w-40 h-40 bg-yellow rounded-full border-8 border-night"
+        class="z-10 absolute w-40 h-40 bg-gray rounded-full border-8 border-night flex flex-row gap-0 items-center justify-center shadow-2xl"
         :style="rightCircleStyle"
-      ></div>
+      >
+        <div class="h-5 rounded-full p-1 bg-yellow">
+          <p
+            class="tracking-tighter leading-tight text-jet text-xxs font-beba font-bold"
+          >
+            Learn More
+          </p>
+        </div>
+        <div
+          class="w-5 h-5 rounded-full border p-1 border-yellow flex items-center justify-center"
+        >
+          <i
+            class="text-yellow text-xs fa-solid fa-arrow-up transform rotate-45"
+          ></i>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -47,10 +69,10 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from "vue";
 
-// 定義 scroll 相關參數
+// 定義滾動相關參數
 const scrollOffset = ref(0);
-const factor = 0.5;
-const accelFactor = 0.025;
+const factor = 0.2; // 原始滾動量縮放因子
+const accelFactor = 0.1; // 用於圓形加速效果的因子
 
 function handleScroll() {
   scrollOffset.value = window.scrollY * factor;
@@ -63,30 +85,56 @@ onUnmounted(() => {
   window.removeEventListener("scroll", handleScroll);
 });
 
-// 使用非線性公式產生加速效果：初始移動慢，結束時快
+// 非線性加速效果：用於圓形位置的偏移
 const acceleratedOffset = computed(
   () => Math.pow(scrollOffset.value, 1.5) * accelFactor
 );
 
-// 左側圓形的 style，利用 acceleratedOffset 向左偏移，並上調至 -200%
+// 左側圓形的 style
 const leftCircleStyle = computed(() => ({
   left: "50%",
   top: "50%",
   transform: `translate(calc(-50% - ${acceleratedOffset.value}px), -200%)`,
 }));
 
-// 右側圓形的 style，利用 acceleratedOffset 向右偏移，並上調至 -200%
+// 右側圓形的 style
 const rightCircleStyle = computed(() => ({
   left: "50%",
   top: "50%",
   transform: `translate(calc(-50% + ${acceleratedOffset.value}px), -200%)`,
 }));
+
+// 文字視差效果：設定一個較小的因子，讓文字移動比滾動慢
+const textFactor = 2.4;
+
+const findStyle = computed(() => ({
+  transform: `translate(-50%, calc(50% + ${
+    scrollOffset.value * textFactor
+  }px))`,
+}));
+
+const musicStyle = computed(() => ({
+  transform: `translate(-10%, calc(10% + ${
+    scrollOffset.value * textFactor
+  }px))`,
+}));
+
+const forStyle = computed(() => ({
+  transform: `translate(-80%, calc(-30% + ${
+    scrollOffset.value * textFactor
+  }px))`,
+}));
+
+const todayStyle = computed(() => ({
+  transform: `translate(-30%, calc(-70% + ${
+    scrollOffset.value * textFactor
+  }px))`,
+}));
 </script>
 
-<!-- 如果 Tailwind 中未定義 bg-jet 與 bg-night，可以在全域 CSS 或此處自定義 -->
 <style scoped>
 .text-outline {
   color: transparent;
-  -webkit-text-stroke: 1px rgb(54, 54, 54);
+  -webkit-text-stroke: 1px rgb(39, 39, 39);
 }
 </style>
