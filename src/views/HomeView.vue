@@ -1,4 +1,5 @@
 <template>
+  <Navbar />
   <BackgroundCircles />
   <!-- <HeroText /> -->
   <TransparentSection />
@@ -12,6 +13,7 @@ import BackgroundCircles from "../components/BackgroundCircles.vue";
 import TransparentSection from "../components/TransparentSection.vue";
 import WhiteContent from "../components/WhiteContent.vue";
 import SideBar from "../components/SideBar.vue";
+import Navbar from "@/components/Navbar.vue";
 </script>
 
 <style></style>

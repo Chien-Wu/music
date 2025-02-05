@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="relative rounded-xl bg-white z-30 min-h-screen flex flex-col items-center p-6"
-  >
+  <div class="relative bg-jet z-30 min-h-screen flex flex-col items-center p-6">
     <div class="max-w-3xl mx-auto py-16 w-full">
       <input
         v-model="userInput"
@@ -14,9 +12,10 @@
       >
         SEND
       </button>
-      <div v-if="apiData" class="mt-6 p-4 bg-gray-100 rounded-md">
+      <div v-if="apiData" class="mt-6 text-white p-4 bg-gray-100 rounded-md">
         <h3 class="text-xl font-semibold">API 回應：</h3>
         <p class="text-gray-800 mt-2">{{ apiData.recommend.song_name }}</p>
+        <p class="text-gray-800">{{ apiData.recommend.spotify_id }}</p>
       </div>
     </div>
   </div>
