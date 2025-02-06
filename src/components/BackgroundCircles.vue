@@ -39,7 +39,7 @@
         <!-- 中央圓形 -->
         <div
           class="z-20 absolute w-40 h-40 bg-yellow rounded-full border-8 border-night flex items-center justify-center"
-          style="left: 50%; top: 50%; transform: translate(-50%, -200%)"
+          style="left: 50%; top: 60%; transform: translate(-50%, -200%)"
         >
           <h1 class="z-30 text-white text-8xl font-bold font-bebas">MooLody</h1>
         </div>
@@ -98,14 +98,14 @@ const acceleratedOffset = computed(
 // 左側圓形的 style
 const leftCircleStyle = computed(() => ({
   left: "50%",
-  top: "50%",
+  top: "60%",
   transform: `translate(calc(-50% - ${acceleratedOffset.value}px), -200%)`,
 }));
 
 // 右側圓形的 style
 const rightCircleStyle = computed(() => ({
   left: "50%",
-  top: "50%",
+  top: "60%",
   transform: `translate(calc(-50% + ${acceleratedOffset.value}px), -200%)`,
 }));
 

@@ -34,7 +34,7 @@ const sendRequest = async () => {
   }
 
   try {
-    const response = await fetch("/api/recommend", {
+    const response = await fetch("/api/api/recommend", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ text: userInput.value }),

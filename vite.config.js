@@ -14,8 +14,8 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      "/api": {
-        target: "http://localhost:8000/api", // your backend server
+      "/api/api": {
+        target: "http://localhost:8000", // your backend server
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
