@@ -7,6 +7,7 @@ export default {
         night: "#0F0F0F",
         jet: "#2A2929",
         gray: "#444342",
+        lightgray: "#D9D9D9",
         yellow: "#F2D000",
         orange: "#FFB700",
       },

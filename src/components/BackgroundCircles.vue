@@ -40,14 +40,15 @@
         <div
           class="z-20 absolute w-40 h-40 bg-yellow rounded-full border-8 border-night flex items-center justify-center"
           style="left: 50%; top: 60%; transform: translate(-50%, -200%)"
+          :style="[jazzBackgroundStyle]"
         >
           <h1 class="z-30 text-white text-8xl font-bold font-bebas">MooLody</h1>
         </div>
 
         <!-- 右側圓形 -->
         <div
-          class="z-10 absolute w-40 h-40 bg-gray rounded-full border-8 border-night flex flex-row gap-0 items-center justify-center shadow-2xl"
-          :style="rightCircleStyle"
+          class="z-10 absolute w-40 h-40 rounded-full border-8 border-night flex flex-row gap-0 items-center justify-center shadow-2xl"
+          :style="[rightCircleStyle, vynalBackgroundStyle]"
         >
           <div class="h-5 rounded-full p-1 bg-yellow">
             <p
@@ -72,7 +73,6 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from "vue";
-import Navbar from "./Navbar.vue";
 
 // 定義滾動相關參數
 const scrollOffset = ref(0);
@@ -134,6 +134,22 @@ const todayStyle = computed(() => ({
   transform: `translate(-30%, calc(-140% + ${
     scrollOffset.value * textFactor
   }px))`,
+}));
+
+import JazzImage from "@/assets/images/jazz.jpeg";
+const jazzBackgroundStyle = computed(() => ({
+  backgroundImage: `url(${JazzImage})`, // 替換成你的圖片路徑
+  backgroundSize: "cover", // 確保圖片覆蓋整個圓形
+  backgroundPosition: "center", // 置中顯示
+  backgroundRepeat: "no-repeat", // 避免重複
+}));
+
+import VynalImage from "@/assets/images/vynal.jpeg";
+const vynalBackgroundStyle = computed(() => ({
+  backgroundImage: `url(${VynalImage})`, // 替換成你的圖片路徑
+  backgroundSize: "cover", // 確保圖片覆蓋整個圓形
+  backgroundPosition: "center", // 置中顯示
+  backgroundRepeat: "no-repeat", // 避免重複
 }));
 </script>
 
