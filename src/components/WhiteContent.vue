@@ -1,5 +1,5 @@
 <template>
-  <div class="relative bg-jet z-30 min-h-screen flex flex-col items-center p-6">
+  <div class="relative bg-jet z-30 flex flex-col items-center p-6">
     <div class="max-w-3xl mx-auto py-16 w-full space-y-6 text-white">
       <!-- 第 0 步：填空句子 -->
       <div v-if="currentStep === 0" class="space-y-8">
@@ -10,7 +10,7 @@
             class="p-5 w-full text-lg bg-transparent rounded-full"
           />
         </div>
-        <!-- 箭頭按鈕，點擊後進入下一步 -->
+        <!-- 使用 AnimatedButton 取代原先的箭頭按鈕 -->
         <AnimatedButton
           label="NEXT"
           @click="goNext"
@@ -23,14 +23,15 @@
         v-if="currentStep > 0 && currentStep <= choices.length"
         class="space-y-8"
       >
-        <!-- 由於 choices 是陣列，使用 currentStep-1 取得目前題目 -->
+        <!-- 由於 choices 為陣列，使用 currentStep-1 取得目前題目 -->
         <div
           class="p-2 rounded-full bg-gray relative overflow-hidden"
           v-if="currentChoice"
         >
           <div class="relative">
-            <!-- 高亮指示器 -->
+            <!-- 高亮指示器：只有使用者選擇後才會顯示 -->
             <div
+              v-if="selectedOptions[currentChoice.id]"
               class="absolute top-0 left-0 h-full w-1/2 bg-orange rounded-full transition-all duration-300"
               :style="{
                 transform:
@@ -66,18 +67,27 @@
             </div>
           </div>
         </div>
+        <!-- 使用 AnimatedButton 前往下一題 -->
         <AnimatedButton
           label="NEXT"
           @click="goNext"
-          :class="{ disabled: !userInput.trim() }"
+          :class="{ disabled: !selectedOptions[currentChoice?.id] }"
         />
       </div>
 
-      <!-- 當所有題目皆回答完畢時顯示 API 回應 -->
+      <!-- 當所有題目皆回答完畢後顯示 Spotify 播放器 -->
       <div v-if="currentStep > choices.length" class="mt-6 p-4 rounded-full">
-        <h3 class="text-xl font-semibold">API 回應：</h3>
-        <p class="mt-2">{{ apiData?.recommend.song_name }}</p>
-        <p class="">{{ apiData?.recommend.spotify_id }}</p>
+        <!-- 使用 Tailwind class 使 iframe 置中並全寬 -->
+        <iframe
+          v-if="spotifyEmbedUrl"
+          :src="spotifyEmbedUrl"
+          width="100%"
+          height="380"
+          frameborder="0"
+          allowtransparency="true"
+          allow="encrypted-media"
+          class="w-full mx-auto"
+        ></iframe>
       </div>
     </div>
   </div>
@@ -108,6 +118,18 @@ const currentChoice = computed(() => {
   return null;
 });
 
+// 組合 Spotify 嵌入 URL，利用 API 回應中的 spotify_id
+const spotifyEmbedUrl = computed(() => {
+  if (
+    apiData.value &&
+    apiData.value.recommend &&
+    apiData.value.recommend.spotify_id
+  ) {
+    return `https://open.spotify.com/embed/track/${apiData.value.recommend.spotify_id}`;
+  }
+  return "";
+});
+
 // 更新選項
 const selectOption = (id, option) => {
   selectedOptions.value[id] = option;
@@ -115,10 +137,10 @@ const selectOption = (id, option) => {
 
 // 切換到下一題
 const goNext = async () => {
-  // 如果目前是填空題，則直接前進，並呼叫 API
+  // 如果目前是填空題，則直接前進並呼叫 API
   if (currentStep.value === 0) {
     if (userInput.value.trim()) {
-      await sendRequest(); // 送出請求
+      await sendRequest(); // 送出 API 請求
       currentStep.value++;
     }
   } else {
