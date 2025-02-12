@@ -22,7 +22,7 @@
       <div class="relative w-full h-full flex items-center justify-center">
         <!-- 左側圓形 -->
         <div
-          class="z-30 absolute w-40 h-40 bg-orange rounded-full border-8 border-night flex items-center justify-center"
+          class="z-30 absolute w-40 h-40 bg-orange rounded-full border-4 border-night flex items-center justify-center"
           :style="leftCircleStyle"
         >
           <div
@@ -38,7 +38,7 @@
 
         <!-- 中央圓形 -->
         <div
-          class="z-20 absolute w-40 h-40 bg-yellow rounded-full border-8 border-night flex items-center justify-center"
+          class="z-20 absolute w-40 h-40 bg-yellow rounded-full border-4 border-night flex items-center justify-center"
           style="left: 50%; top: 60%; transform: translate(-50%, -200%)"
           :style="[jazzBackgroundStyle]"
         >
@@ -47,7 +47,7 @@
 
         <!-- 右側圓形 -->
         <div
-          class="z-10 absolute w-40 h-40 rounded-full border-8 border-night flex flex-row gap-0 items-center justify-center shadow-2xl"
+          class="z-10 absolute w-40 h-40 rounded-full border-4 border-night flex flex-row gap-0 items-center justify-center shadow-2xl"
           :style="[rightCircleStyle, vynalBackgroundStyle]"
         >
           <div class="h-5 rounded-full p-1 bg-yellow">
